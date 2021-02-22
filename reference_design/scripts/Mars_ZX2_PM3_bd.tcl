@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------------
-# Copyright (c) 2020 by Enclustra GmbH, Switzerland.
+# Copyright (c) 2021 by Enclustra GmbH, Switzerland.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this hardware, software, firmware, and associated documentation files (the
@@ -54,8 +54,8 @@ set_property -dict [ list \
   CONFIG.PCW_EN_CLK1_PORT {1} \
   CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {50} \
   CONFIG.PCW_GPIO_MIO_GPIO_ENABLE {1} \
-  CONFIG.PCW_PRESET_BANK0_VOLTAGE {LVCMOS 1.8V} \
-  CONFIG.PCW_PRESET_BANK1_VOLTAGE {LVCMOS 1.8V} \
+  CONFIG.PCW_PRESET_BANK0_VOLTAGE {LVCMOS 2.5V} \
+  CONFIG.PCW_PRESET_BANK1_VOLTAGE {LVCMOS 2.5V} \
   CONFIG.PCW_APU_PERIPHERAL_FREQMHZ {767} \
 ] [get_bd_cells processing_system7]
 
