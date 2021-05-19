@@ -7,3 +7,9 @@
 * Added Petalinux BSP to release binaries
 * Versioning now includes Xilinx tool version
 * Changed VCC_IO voltage to 2.5V from previously 1.8V
+## 2020.2_v1.1.1
+* Doc: Fix incompatible project name suggestion including a '+'
+* Doc: Refer to system instead of application for creating boot image and program flash
+* Doc: Updates in troubleshoot section and workarounds
+* Doc: Minor optimizations
+* Doc: Improve MCT instructions
