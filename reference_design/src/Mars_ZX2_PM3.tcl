@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------------
-# Copyright (c) 2021 by Enclustra GmbH, Switzerland.
+# Copyright (c) 2022 by Enclustra GmbH, Switzerland.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this hardware, software, firmware, and associated documentation files (the
@@ -28,7 +28,7 @@ set_property BITSTREAM.CONFIG.OVERTEMPPOWERDOWN ENABLE [current_design]
 set_property BITSTREAM.CONFIG.UNUSEDPIN PULLNONE [current_design]
 # ----------------------------------------------------------------------------------
 
-# CLK33
+# 33 MHz user clock
 if {$Zynq == "Z7020"} {
   create_clock -name CLK33 -period 30.000 [get_ports {CLK33}]
 }
@@ -36,12 +36,12 @@ if {$Zynq == "Z7020"} {
   set_property -dict {PACKAGE_PIN Y7    IOSTANDARD LVCMOS25  } [get_ports {CLK33}]
 }
 
-# ETH_LED
+# ETH LED
 if {$Zynq == "Z7020"} {
   set_property -dict {PACKAGE_PIN V5    IOSTANDARD LVCMOS25  } [get_ports {ETH_LED2_N}]
 }
 
-# FMC0
+# FMC LPC Connector 0
 set_property -dict {PACKAGE_PIN M15   IOSTANDARD LVCMOS25  } [get_ports {FMC_LA02_N}]
 set_property -dict {PACKAGE_PIN M14   IOSTANDARD LVCMOS25  } [get_ports {FMC_LA02_P}]
 set_property -dict {PACKAGE_PIN L15   IOSTANDARD LVCMOS25  } [get_ports {FMC_LA03_N}]
@@ -116,24 +116,36 @@ set_property -dict {PACKAGE_PIN U19   IOSTANDARD LVCMOS25  } [get_ports {FMC_CLK
 set_property -dict {PACKAGE_PIN U18   IOSTANDARD LVCMOS25  } [get_ports {FMC_CLK1_M2C_P}]
 
 # FX3
-set_property -dict {PACKAGE_PIN B20   IOSTANDARD LVCMOS25  } [get_ports {FX3_A1}]
+set_property -dict {PACKAGE_PIN B20   IOSTANDARD LVCMOS25  } [get_ports {FX3_A[1]}]
 set_property -dict {PACKAGE_PIN B19   IOSTANDARD LVCMOS25  } [get_ports {FX3_CLK}]
-set_property -dict {PACKAGE_PIN D18   IOSTANDARD LVCMOS25  } [get_ports {FX3_DQ8}]
-set_property -dict {PACKAGE_PIN E19   IOSTANDARD LVCMOS25  } [get_ports {FX3_DQ9}]
-set_property -dict {PACKAGE_PIN E17   IOSTANDARD LVCMOS25  } [get_ports {FX3_DQ10}]
-set_property -dict {PACKAGE_PIN F16   IOSTANDARD LVCMOS25  } [get_ports {FX3_DQ11}]
-set_property -dict {PACKAGE_PIN L17   IOSTANDARD LVCMOS25  } [get_ports {FX3_DQ12}]
-set_property -dict {PACKAGE_PIN L16   IOSTANDARD LVCMOS25  } [get_ports {FX3_DQ13}]
-set_property -dict {PACKAGE_PIN F17   IOSTANDARD LVCMOS25  } [get_ports {FX3_DQ14}]
-set_property -dict {PACKAGE_PIN E18   IOSTANDARD LVCMOS25  } [get_ports {FX3_DQ15}]
+set_property -dict {PACKAGE_PIN D18   IOSTANDARD LVCMOS25  } [get_ports {FX3_DQ[8]}]
+set_property -dict {PACKAGE_PIN E19   IOSTANDARD LVCMOS25  } [get_ports {FX3_DQ[9]}]
+set_property -dict {PACKAGE_PIN E17   IOSTANDARD LVCMOS25  } [get_ports {FX3_DQ[10]}]
+set_property -dict {PACKAGE_PIN F16   IOSTANDARD LVCMOS25  } [get_ports {FX3_DQ[11]}]
+set_property -dict {PACKAGE_PIN L17   IOSTANDARD LVCMOS25  } [get_ports {FX3_DQ[12]}]
+set_property -dict {PACKAGE_PIN L16   IOSTANDARD LVCMOS25  } [get_ports {FX3_DQ[13]}]
+set_property -dict {PACKAGE_PIN F17   IOSTANDARD LVCMOS25  } [get_ports {FX3_DQ[14]}]
+set_property -dict {PACKAGE_PIN E18   IOSTANDARD LVCMOS25  } [get_ports {FX3_DQ[15]}]
 set_property -dict {PACKAGE_PIN A20   IOSTANDARD LVCMOS25  } [get_ports {FX3_FLAGA}]
 set_property -dict {PACKAGE_PIN C20   IOSTANDARD LVCMOS25  } [get_ports {FX3_FLAGB_BTN_N}]
 
-# I2C_PL
+# Mini HDMI / PCI Express / LVDS Connector
+set_property -dict {PACKAGE_PIN V17   IOSTANDARD LVCMOS25  } [get_ports {PCIE_PET1_P}]
+set_property -dict {PACKAGE_PIN U12   IOSTANDARD LVDS_25   } [get_ports {PCIE_PER0_N}]
+set_property -dict {PACKAGE_PIN T12   IOSTANDARD LVDS_25   } [get_ports {PCIE_PER0_P}]
+set_property -dict {PACKAGE_PIN V13   IOSTANDARD LVDS_25   } [get_ports {PCIE_PET0_N}]
+set_property -dict {PACKAGE_PIN U13   IOSTANDARD LVDS_25   } [get_ports {PCIE_PET0_P}]
+set_property -dict {PACKAGE_PIN R18   IOSTANDARD LVDS_25   } [get_ports {PCIE_PER1_N}]
+set_property -dict {PACKAGE_PIN T17   IOSTANDARD LVDS_25   } [get_ports {PCIE_PER1_P}]
+set_property -dict {PACKAGE_PIN V18   IOSTANDARD LVCMOS25  } [get_ports {PCIE_PET1_N}]
+set_property -dict {PACKAGE_PIN U15   IOSTANDARD LVDS_25   } [get_ports {PCIE_REFCLK_N}]
+set_property -dict {PACKAGE_PIN U14   IOSTANDARD LVDS_25   } [get_ports {PCIE_REFCLK_P}]
+
+# I2C PL
 if {$Zynq == "Z7020"} {
   set_property -dict {PACKAGE_PIN Y6    IOSTANDARD LVCMOS25  } [get_ports {I2C_INT_N}]
-  set_property -dict {PACKAGE_PIN V8    IOSTANDARD LVCMOS25  } [get_ports {I2C_SCL_LS}]
-  set_property -dict {PACKAGE_PIN W8    IOSTANDARD LVCMOS25  } [get_ports {I2C_SDA_LS}]
+  set_property -dict {PACKAGE_PIN V8    IOSTANDARD LVCMOS25  } [get_ports {I2C_SCL}]
+  set_property -dict {PACKAGE_PIN W8    IOSTANDARD LVCMOS25  } [get_ports {I2C_SDA}]
 }
 
 # LED
@@ -141,3 +153,7 @@ set_property -dict {PACKAGE_PIN R19   IOSTANDARD LVCMOS25  } [get_ports {LED0_N_
 set_property -dict {PACKAGE_PIN T19   IOSTANDARD LVCMOS25  } [get_ports {LED1_N_PL}]
 set_property -dict {PACKAGE_PIN G14   IOSTANDARD LVCMOS25  } [get_ports {LED2_N_PL}]
 set_property -dict {PACKAGE_PIN J15   IOSTANDARD LVCMOS25  } [get_ports {LED3_N_PL}]
+
+# UART
+set_property -dict {PACKAGE_PIN W13   IOSTANDARD LVCMOS25  } [get_ports {UART_RXD}]
+set_property -dict {PACKAGE_PIN V12   IOSTANDARD LVCMOS25  } [get_ports {UART_TXD}]

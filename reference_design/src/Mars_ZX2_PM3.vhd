@@ -1,5 +1,5 @@
 ---------------------------------------------------------------------------------------------------
--- Copyright (c) 2021 by Enclustra GmbH, Switzerland.
+-- Copyright (c) 2022 by Enclustra GmbH, Switzerland.
 --
 -- Permission is hereby granted, free of charge, to any person obtaining a copy of
 -- this hardware, software, firmware, and associated documentation files (the
@@ -55,13 +55,13 @@ entity Mars_ZX2_PM3 is
     DDR_dqs_n                      : inout  std_logic_vector(3 downto 0);
     DDR_dqs_p                      : inout  std_logic_vector(3 downto 0);
     
-    -- CLK33
+    -- 33 MHz user clock
     CLK33                          : in      std_logic; -- Only available on Z7020 modules
     
-    -- ETH_LED
+    -- ETH LED
     ETH_LED2_N                     : inout   std_logic; -- Only available on Z7020 modules
     
-    -- FMC0
+    -- FMC LPC Connector 0
     FMC_LA02_N                     : inout   std_logic;
     FMC_LA02_P                     : inout   std_logic;
     FMC_LA03_N                     : inout   std_logic;
@@ -136,29 +136,38 @@ entity Mars_ZX2_PM3 is
     FMC_CLK1_M2C_P                 : inout   std_logic;
     
     -- FX3
-    FX3_A1                         : inout   std_logic;
-    FX3_CLK                        : inout   std_logic;
-    FX3_DQ8                        : inout   std_logic;
-    FX3_DQ9                        : inout   std_logic;
-    FX3_DQ10                       : inout   std_logic;
-    FX3_DQ11                       : inout   std_logic;
-    FX3_DQ12                       : inout   std_logic;
-    FX3_DQ13                       : inout   std_logic;
-    FX3_DQ14                       : inout   std_logic;
-    FX3_DQ15                       : inout   std_logic;
-    FX3_FLAGA                      : inout   std_logic;
-    FX3_FLAGB_BTN_N                : inout   std_logic;
+    FX3_CLK                        : out     std_logic;
+    FX3_FLAGA                      : in      std_logic;
+    FX3_FLAGB_BTN_N                : in      std_logic;
+    FX3_A                          : out     std_logic_vector(1 downto 1);
+    FX3_DQ                         : inout   std_logic_vector(15 downto 8);
     
-    -- I2C_PL
+    -- Mini HDMI / PCI Express / LVDS Connector
+    PCIE_PET1_P                    : in      std_logic;
+    PCIE_PER0_N                    : out     std_logic;
+    PCIE_PER0_P                    : out     std_logic;
+    PCIE_PET0_N                    : out     std_logic;
+    PCIE_PET0_P                    : out     std_logic;
+    PCIE_PER1_N                    : out     std_logic;
+    PCIE_PER1_P                    : out     std_logic;
+    PCIE_PET1_N                    : inout   std_logic;
+    PCIE_REFCLK_N                  : out     std_logic;
+    PCIE_REFCLK_P                  : out     std_logic;
+    
+    -- I2C PL
     I2C_INT_N                      : in      std_logic; -- Only available on Z7020 modules
-    I2C_SCL_LS                     : inout   std_logic; -- Only available on Z7020 modules
-    I2C_SDA_LS                     : inout   std_logic; -- Only available on Z7020 modules
+    I2C_SCL                        : inout   std_logic; -- Only available on Z7020 modules
+    I2C_SDA                        : inout   std_logic; -- Only available on Z7020 modules
     
     -- LED
     LED0_N_PL                      : out     std_logic;
     LED1_N_PL                      : out     std_logic;
     LED2_N_PL                      : out     std_logic;
-    LED3_N_PL                      : out     std_logic
+    LED3_N_PL                      : out     std_logic;
+    
+    -- UART
+    UART_RXD                       : in      std_logic;
+    UART_TXD                       : out     std_logic
   );
 end Mars_ZX2_PM3;
 
@@ -196,6 +205,14 @@ architecture rtl of Mars_ZX2_PM3 is
     );
     
   end component Mars_ZX2;
+  
+  component OBUFDS is
+    port (
+      I : in STD_LOGIC;
+      O : out STD_LOGIC;
+      OB : out STD_LOGIC
+    );
+  end component OBUFDS;
 
   ---------------------------------------------------------------------------------------------------
   -- signal declarations
@@ -238,6 +255,34 @@ begin
       LED_N                => LED_N
     );
   
+  lvds_clock_buf: component OBUFDS
+    port map (
+      I => '0',
+      O => PCIE_REFCLK_P,
+      OB => PCIE_REFCLK_N
+    );
+  
+  lvds_per0_buf: component OBUFDS
+    port map (
+      I => '0',
+      O => PCIE_PER0_P,
+      OB => PCIE_PER0_N
+    );
+  
+  lvds_pet0_buf: component OBUFDS
+    port map (
+      I => '0',
+      O => PCIE_PET0_P,
+      OB => PCIE_PET0_N
+    );
+  
+  lvds_per1_buf: component OBUFDS
+    port map (
+      I => '0',
+      O => PCIE_PER1_P,
+      OB => PCIE_PER1_N
+    );
+  
   process (Clk50)
   begin
     if rising_edge (Clk50) then
@@ -252,5 +297,5 @@ begin
   LED1_N_PL <= '0' when LED_N(0) = '0' else 'Z';
   LED2_N_PL <= '0' when LED_N(1) = '0' else 'Z';
   LED3_N_PL <= '0' when LED_N(2) = '0' else 'Z';
-
+  
 end rtl;

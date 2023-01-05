@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------------
-# Copyright (c) 2021 by Enclustra GmbH, Switzerland.
+# Copyright (c) 2022 by Enclustra GmbH, Switzerland.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this hardware, software, firmware, and associated documentation files (the
@@ -38,6 +38,7 @@ if {![info exists baseboard]}   {set baseboard PM3}
 if {[lindex $argv 0] != ""} { set module_name [lindex $argv 0] }
 
 set module Mars_ZX2
+set family zynq
 
 switch $module_name {
   MA-ZX2-20-2I-D9 {
@@ -46,7 +47,7 @@ switch $module_name {
   }
   MA-ZX2-10-2I-D9 {
     set part xc7z010clg400-2 
-    set Zynq None
+    set Zynq No_Zynq
   }
   default {
     puts "$module_name not available"
@@ -59,7 +60,6 @@ if {![info exists project_name]} {
   set project_name ${module}
   if {[info exists baseboard]} {
     lappend project_name ${baseboard}
-    puts $project_name
   }
   set project_name [string map {" " "_"} "${project_name}"]
 }
